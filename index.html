@@ -3,61 +3,16 @@
   <script src="https://js.zohostatic.com/CRM/js/WidgetCRM_JS_1.0.js"></script>
 </head>
 <body>
-<script>
-  ZOHO.embeddedApp.on("PageLoad", function(data) {
-    const leadId = data.EntityId;
+  <div id="debug" style="font-size:20px;color:blue">Инициализация...</div>
+  <script>
+    document.getElementById("debug").innerText = "Загрузка виджета...";
 
-    ZOHO.CRM.API.getRecord({ Entity: "Leads", RecordID: leadId }).then(function(response) {
-      const lead = response.data[0];
-      const segment = lead.Segment;
-
-      if (!segment) {
-        ZOHO.CRM.UI.Popup({
-          title: "Выберите сегмент",
-          content: {
-            type: "picklist",
-            label: "Сегмент",
-            name: "segment_choice",
-            choices: ["Резерв", "Для страховки", "Неактивный", "Активный"]
-          },
-          ok_handler: function(values) {
-            const selectedSegment = values.segment_choice;
-            ZOHO.CRM.API.updateRecord({
-              Entity: "Leads",
-              RecordID: leadId,
-              APIData: { Segment: selectedSegment }
-            }).then(function() {
-              convertLead(leadId);
-            });
-          }
-        });
-      } else {
-        convertLead(leadId);
-      }
+    ZOHO.embeddedApp.on("PageLoad", function(data) {
+      document.getElementById("debug").innerText = "Данные: " + JSON.stringify(data);
     });
 
-    function convertLead(id) {
-      ZOHO.CRM.FUNCTIONS.execute("Convert_Lead_With_Segment", {
-        arguments: { id }
-      }).then(function(result) {
-        if (result.status === "success") {
-          ZOHO.CRM.UI.Notification.show({
-            type: "success",
-            message: "Лид успешно сконвертирован"
-          });
-          ZOHO.CRM.UI.Reload();
-        } else {
-          ZOHO.CRM.UI.Notification.show({
-            type: "error",
-            message: "Ошибка: " + result.message
-          });
-        }
-      });
-    }
-  });
-
-  ZOHO.embeddedApp.init();
-</script>
+    ZOHO.embeddedApp.init();
+  </script>
 </body>
 </html>
 
