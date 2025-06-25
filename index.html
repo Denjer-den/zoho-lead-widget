@@ -5,16 +5,13 @@
 <body>
   <div id="debug" style="font-size:20px;color:blue">Загрузка виджета...</div>
   <script>
-    ZOHO.embeddedApp.init();
-
+  ZOHO.embeddedApp.init().then(function() {
     ZOHO.embeddedApp.on("PageLoad", function(data) {
-      if (data && data.EntityId) {
-        document.getElementById("debug").innerText = "Текущая запись: " + data.EntityId;
-      } else {
-        document.getElementById("debug").innerText = "EntityId не получен";
-      }
+      console.log("Данные лида:", data);
+      document.getElementById("debug").innerText = "Лид ID: " + data.EntityId;
     });
-  </script>
+  });
+</script>
 </body>
 </html>
 
