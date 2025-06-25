@@ -1,0 +1,18 @@
+{
+  "name": "LeadSegmentConvert",
+  "version": "1.0",
+  "manifest_version": 1,
+  "display_name": "Лид: Выбор сегмента",
+  "permissions": [
+    "zoho.crm.record.read",
+    "zoho.crm.record.write",
+    "zoho.crm.functions.execute"
+  ],
+  "components": [
+    {
+      "name": "main",
+      "type": "page",
+      "url": "index.html"
+    }
+  ]
+}
