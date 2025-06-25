@@ -1,18 +1,31 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>Zoho CRM Widget</title>
   <script src="https://js.zohostatic.com/CRM/js/WidgetCRM_JS_1.0.js"></script>
 </head>
 <body>
-  <div id="debug" style="font-size:20px;color:blue">Загрузка виджета...</div>
+  <div id="debug" style="font-size: 20px; color: blue">Загрузка виджета...</div>
+
   <script>
-  ZOHO.embeddedApp.init().then(function() {
-    ZOHO.embeddedApp.on("PageLoad", function(data) {
-      console.log("Данные лида:", data);
-      document.getElementById("debug").innerText = "Лид ID: " + data.EntityId;
-    });
-  });
-</script>
+    if (typeof ZOHO === "undefined" || !ZOHO.embeddedApp) {
+      document.getElementById("debug").innerText = "Ошибка: SDK не загружен!";
+    } else {
+      ZOHO.embeddedApp.init();
+
+      ZOHO.embeddedApp.on("PageLoad", function(data) {
+        console.log("PageLoad получено:", data);
+        if (data && data.EntityId) {
+          document.getElementById("debug").innerText = "ID лида: " + data.EntityId;
+        } else {
+          document.getElementById("debug").innerText = "EntityId не получен";
+        }
+      });
+    }
+  </script>
 </body>
 </html>
+
 
 
