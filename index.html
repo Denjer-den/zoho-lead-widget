@@ -3,16 +3,22 @@
   <script src="https://js.zohostatic.com/CRM/js/WidgetCRM_JS_1.0.js"></script>
 </head>
 <body>
-  <div id="debug" style="font-size:20px;color:blue">Инициализация...</div>
+  <div id="debug" style="font-size:20px;color:blue">Загрузка виджета...</div>
   <script>
-    document.getElementById("debug").innerText = "Загрузка виджета...";
-
-    ZOHO.embeddedApp.on("PageLoad", function(data) {
-      document.getElementById("debug").innerText = "Данные: " + JSON.stringify(data);
+    // Попытка получить EntityId по-другому — через ZOHO.CRM.UI
+    ZOHO.embeddedApp.init().then(function() {
+      ZOHO.CRM.API.getCurrentRecord().then(function(data) {
+        if (data && data.EntityId) {
+          document.getElementById("debug").innerText = "Текущая запись: " + data.EntityId;
+        } else {
+          document.getElementById("debug").innerText = "Не удалось получить текущую запись";
+        }
+      }).catch(function(err) {
+        document.getElementById("debug").innerText = "Ошибка получения записи: " + JSON.stringify(err);
+      });
     });
-
-    ZOHO.embeddedApp.init();
   </script>
 </body>
+
 </html>
 
